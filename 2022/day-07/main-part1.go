@@ -12,13 +12,20 @@ type Directory struct {
 	Name   string
 	Parent *Directory
 	Files  []File
-	Dirs   []Directory
+	Dirs   []*Directory
 }
 
 type File struct {
 	Name string
 	Size int
 }
+
+func NewDirectory(name string, parent *Directory) *Directory{
+	return &Directory{
+		Name:   name,
+		Parent: parent,
+	}
+} 
 
 func main() {
 	// Open file
@@ -29,10 +36,7 @@ func main() {
 	defer file.Close()
 
 	// Create directory, starting with root
-	dirs := Directory{
-		Name:   "root",
-		Parent: nil,
-	}
+	dirs := NewDirectory("/", nil)
 
 	cd := &dirs
 	lastCmd := ""
@@ -63,6 +67,7 @@ func main() {
 }
 
 func UserCommand(tokens []string, dirs Directory, cd *Directory) string {
+	fmt.Println("User Command:", tokens[1])
 	return tokens[1]
 }
 
